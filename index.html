@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사지 마세요, 입양하세요 | 유기견 수호 캠페인</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 아이콘 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 구글 폰트 (Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        // Tailwind 커스텀 색상 설정
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbf5',
+                            100: '#fef3e2',
+                            200: '#fbe4c3',
+                            300: '#f7ce98',
+                            500: '#e07a5f', // 따뜻한 코랄/테라코타
+                            600: '#d15d3f',
+                            700: '#b04327',
+                            800: '#3d405b', // 깊은 슬레이트 톤
+                            900: '#2b2d42',
+                        },
+                        cream: '#fdfbf7',
+                        warmgray: '#f4f1de'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fdfbf7;
+            color: #2b2d42;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(43, 45, 66, 0.55), rgba(43, 45, 66, 0.65)), 
+                        url('https://images.unsplash.com/photo-1534361960057-19889db9875e?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- 1. 내비게이션 바 -->
+    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- 로고 -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center transition-transform group-hover:scale-110 shadow-md">
+                        <i class="fa-solid font-bold fa-paw text-xl"></i>
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight text-brand-900">따스한 온기<span class="text-brand-500">.</span></span>
+                </a>
+
+                <!-- 데스크톱 메뉴 -->
+                <div class="hidden md:flex items-center space-x-8 font-medium text-brand-900">
+                    <a href="#about" class="hover:text-brand-500 transition-colors">캠페인 소개</a>
+                    <a href="#dogs" class="hover:text-brand-500 transition-colors">아이들 보기</a>
+                    <a href="#support" class="hover:text-brand-500 transition-colors">후원 및 참여</a>
+                    <a href="#contact" class="hover:text-brand-500 transition-colors">참여 문의</a>
+                </div>
+
+                <!-- 후원하기 버튼 (우측) -->
+                <div class="hidden md:flex items-center">
+                    <button onclick="openModal('donationModal')" class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-heart mr-2 text-sm"></i>후원하기
+                    </button>
+                </div>
+
+                <!-- 모바일 메뉴 버튼 -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-900 focus:outline-none p-2" aria-label="메뉴 열기">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-3 shadow-xl">
+            <a href="#about" class="block py-2 text-brand-900 font-medium hover:text-brand-500 transition-colors">캠페인 소개</a>
+            <a href="#dogs" class="block py-2 text-brand-900 font-medium hover:text-brand-500 transition-colors">아이들 보기</a>
+            <a href="#support" class="block py-2 text-brand-900 font-medium hover:text-brand-500 transition-colors">후원 및 참여</a>
+            <a href="#contact" class="block py-2 text-brand-900 font-medium hover:text-brand-500 transition-colors">참여 문의</a>
+            <button onclick="openModal('donationModal')" class="w-full mt-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 rounded-xl shadow-md text-center">
+                <i class="fa-solid fa-heart mr-2"></i>후원하기
+            </button>
+        </div>
+    </nav>
+
+    <!-- 2. 히어로 섹션 -->
+    <section class="relative min-h-screen flex items-center justify-center hero-bg pt-20">
+        <div class="max-w-4xl mx-auto px-4 text-center text-white py-20">
+            <span class="inline-block px-4 py-1.5 bg-brand-500/90 text-white text-sm font-semibold rounded-full mb-6 shadow-md backdrop-blur-sm">
+                🐾 사지 말고 입양하세요
+            </span>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6">
+                누군가의 세상이 되어줄<br>
+                <span class="text-brand-300">작은 손길</span>을 기다립니다.
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                매년 수만 마리의 유기견들이 차가운 거리에서 희망을 잃어갑니다.<br class="hidden sm:inline">
+                당신의 따뜻한 관심으로 아이들에게 새로운 내일을 선물해주세요.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#dogs" class="w-full sm:w-auto bg-brand-500 hover:bg-brand-600 text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    아이들 만나보기 <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+                <button onclick="openModal('donationModal')" class="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white border border-white/40 font-semibold text-lg px-8 py-4 rounded-full backdrop-blur-md transition-all duration-300 text-center">
+                    후원 동참하기
+                </button>
+            </div>
+        </div>
+
+        <!-- 하단 스크롤 안내 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70 animate-bounce">
+            <a href="#about" aria-label="스크롤 아래로"><i class="fa-solid fa-chevron-down text-2xl"></i></a>
+        </div>
+    </section>
+
+    <!-- 3. 캠페인 소개 섹션 -->
+    <section id="about" class="py-24 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base font-bold text-brand-500 tracking-wide uppercase">Campaign</h2>
+                <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-brand-900 tracking-tight">
+                    왜 우리는 유기견 캠페인을 시작했을까요?
+                </p>
+                <p class="mt-4 text-gray-600 leading-relaxed">
+                    한 순간의 버림으로 상처받은 유기견들에게는 거창한 무언가가 아닌, 따뜻한 관심과 보금자리가 필요합니다. 
+                    우리는 아이들과 가족을 연결하는 다리가 되고자 합니다.
+                </p>
+            </div>
+
+            <!-- 카드 3개 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 카드 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-100/60 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center text-brand-500 mb-6 group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-house-chimney-crack text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">유기견의 차가운 현실</h3>
+                    <p class="text-gray-600 leading-relaxed font-light text-sm">
+                        매년 10만 마리가 넘는 반려동물이 유기됩니다. 그중 절반 가까이는 입양되지 못하고 지자체 보호소에서 안락사나 자연사로 삶을 마감합니다.
+                    </p>
+                </div>
+
+                <!-- 카드 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-100/60 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center text-brand-500 mb-6 group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-hand-holding-heart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">사랑으로 치료하는 상처</h3>
+                    <p class="text-gray-600 leading-relaxed font-light text-sm">
+                        사람에게 받은 상처는 다시 사람의 무조건적인 사랑과 온기로만 치유될 수 있습니다. 유기견들도 마음을 열면 세상에서 가장 충직한 친구가 됩니다.
+                    </p>
+                </div>
+
+                <!-- 카드 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-brand-100/60 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center text-brand-500 mb-6 group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-people-roof text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-900 mb-3">함께 만드는 변화</h3>
+                    <p class="text-gray-600 leading-relaxed font-light text-sm">
+                        직접 입양이 어렵더라도 임시보호, 물품/금액 후원, 봉사활동 등 다양한 방법으로 아이들의 소중한 생명을 구하는 일에 동참할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 아이들 소개 섹션 (프로필 및 필터링) -->
+    <section id="dogs" class="py-24 bg-warmgray/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-base font-bold text-brand-500 tracking-wide uppercase">Adoptable Dogs</h2>
+                <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-brand-900 tracking-tight">
+                    가족을 기다리는 아이들
+                </p>
+                <p class="mt-4 text-gray-600">
+                    보호소에서 매일 당신을 기다리고 있는 귀여운 친구들을 소개해 드립니다.
+                </p>
+            </div>
+
+            <!-- 필터링 탭 -->
+            <div class="flex justify-center mb-10 overflow-x-auto pb-2">
+                <div class="inline-flex bg-white p-1.5 rounded-full shadow-sm border border-gray-100">
+                    <button onclick="filterDogs('all')" class="filter-btn active font-medium px-5 py-2 rounded-full text-sm transition-all duration-200 bg-brand-500 text-white shadow-sm" data-filter="all">전체보기</button>
+                    <button onclick="filterDogs('small')" class="filter-btn font-medium px-5 py-2 rounded-full text-sm text-gray-600 hover:text-brand-500 transition-all duration-200" data-filter="small">소형견</button>
+                    <button onclick="filterDogs('medium')" class="filter-btn font-medium px-5 py-2 rounded-full text-sm text-gray-600 hover:text-brand-500 transition-all duration-200" data-filter="medium">중/대형견</button>
+                    <button onclick="filterDogs('puppy')" class="filter-btn font-medium px-5 py-2 rounded-full text-sm text-gray-600 hover:text-brand-500 transition-all duration-200" data-filter="puppy">퍼피 (~1세)</button>
+                </div>
+            </div>
+
+            <!-- 카드 그리드 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="dog-grid">
+                <!-- 프로필 1 -->
+                <div class="dog-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group" data-category="small">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800&auto=format&fit=crop" 
+                             alt="인절미" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x600/fbe4c3/3d405b?text=강아지+사진'">
+                        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-brand-600 text-xs font-bold px-3 py-1 rounded-full shadow">공고중</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-brand-900">절미</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-brand-100 text-brand-800">소형견</span>
+                            </div>
+                            <div class="text-xs text-gray-500 space-y-1 mb-4">
+                                <p><i class="fa-solid fa-dog mr-1"></i> 믹스견 | 남아 (중성화 완료)</p>
+                                <p><i class="fa-solid fa-cake-candles mr-1"></i> 추정 2세 | 4.2kg</p>
+                            </div>
+                            <p class="text-sm text-gray-600 line-clamp-2 font-light">
+                                애교가 넘치고 사람 품을 좋아하는 사랑스러운 아이입니다. 배변 훈련이 잘 되어있어요.
+                            </p>
+                        </div>
+                        <button onclick="openAdoptModal('절미')" class="mt-5 w-full bg-brand-50 hover:bg-brand-500 hover:text-white text-brand-600 font-semibold py-2.5 rounded-xl transition-colors duration-200 text-sm">
+                            입양 상담 신청
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 프로필 2 -->
+                <div class="dog-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group" data-category="medium">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop" 
+                             alt="볼트" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x600/fbe4c3/3d405b?text=강아지+사진'">
+                        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-brand-600 text-xs font-bold px-3 py-1 rounded-full shadow">공고중</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-brand-900">볼트</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-brand-100 text-brand-800">중/대형견</span>
+                            </div>
+                            <div class="text-xs text-gray-500 space-y-1 mb-4">
+                                <p><i class="fa-solid fa-dog mr-1"></i> 비글 믹스 | 남아 (중성화 완료)</p>
+                                <p><i class="fa-solid fa-cake-candles mr-1"></i> 추정 3세 | 11kg</p>
+                            </div>
+                            <p class="text-sm text-gray-600 line-clamp-2 font-light">
+                                에너지가 넘치고 공놀이를 매우 좋아합니다. 활발한 야외 활동을 즐기는 가족에게 딱 맞습니다.
+                            </p>
+                        </div>
+                        <button onclick="openAdoptModal('볼트')" class="mt-5 w-full bg-brand-50 hover:bg-brand-500 hover:text-white text-brand-600 font-semibold py-2.5 rounded-xl transition-colors duration-200 text-sm">
+                            입양 상담 신청
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 프로필 3 -->
+                <div class="dog-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group" data-category="puppy">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop" 
+                             alt="콩이" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x600/fbe4c3/3d405b?text=강아지+사진'">
+                        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-brand-600 text-xs font-bold px-3 py-1 rounded-full shadow">임시보호중</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-brand-900">콩이</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-brand-100 text-brand-800">퍼피</span>
+                            </div>
+                            <div class="text-xs text-gray-500 space-y-1 mb-4">
+                                <p><i class="fa-solid fa-dog mr-1"></i> 시골티즈 | 여아</p>
+                                <p><i class="fa-solid fa-cake-candles mr-1"></i> 약 5개월 | 2.8kg</p>
+                            </div>
+                            <p class="text-sm text-gray-600 line-clamp-2 font-light">
+                                박스에 담겨 발견되었던 장난꾸러기 강아지입니다. 호기심이 많고 낯가림이 없습니다.
+                            </p>
+                        </div>
+                        <button onclick="openAdoptModal('콩이')" class="mt-5 w-full bg-brand-50 hover:bg-brand-500 hover:text-white text-brand-600 font-semibold py-2.5 rounded-xl transition-colors duration-200 text-sm">
+                            입양 상담 신청
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 프로필 4 -->
+                <div class="dog-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group" data-category="small">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?q=80&w=800&auto=format&fit=crop" 
+                             alt="구름이" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x600/fbe4c3/3d405b?text=강아지+사진'">
+                        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-brand-600 text-xs font-bold px-3 py-1 rounded-full shadow">공고중</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-brand-900">구름이</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-brand-100 text-brand-800">소형견</span>
+                            </div>
+                            <div class="text-xs text-gray-500 space-y-1 mb-4">
+                                <p><i class="fa-solid fa-dog mr-1"></i> 푸들 | 여아 (중성화 완료)</p>
+                                <p><i class="fa-solid fa-cake-candles mr-1"></i> 추정 4세 | 3.5kg</p>
+                            </div>
+                            <p class="text-sm text-gray-600 line-clamp-2 font-light">
+                                얌전하고 헛짖음이 거의 없는 신사적인 아이입니다. 조용한 환경을 좋아해요.
+                            </p>
+                        </div>
+                        <button onclick="openAdoptModal('구름이')" class="mt-5 w-full bg-brand-50 hover:bg-brand-500 hover:text-white text-brand-600 font-semibold py-2.5 rounded-xl transition-colors duration-200 text-sm">
+                            입양 상담 신청
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 후원 및 참여 방법 섹션 -->
+    <section id="support" class="py-24 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base font-bold text-brand-500 tracking-wide uppercase">How to Help</h2>
+                <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-brand-900 tracking-tight">
+                    당신의 방법으로 따뜻함을 나누어주세요
+                </p>
+                <p class="mt-4 text-gray-600">
+                    직접 입양이 어렵더라도 유기견 수호에 함께할 수 있는 여러 방법이 있습니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 정기 후원 -->
+                <div class="bg-white rounded-2xl p-8 border border-brand-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-brand-500 text-3xl mb-4">
+                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900 mb-2">정기/일시 후원</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                            후원금은 아이들의 병원 치료비, 예방접종, 사료 및 보호소 환경 개선 비용으로 정직하게 사용됩니다.
+                        </p>
+                    </div>
+                    <button onclick="openModal('donationModal')" class="w-full bg-brand-900 hover:bg-brand-800 text-white font-medium py-3 rounded-xl transition-colors text-center">
+                        후원 안내 받기
+                    </button>
+                </div>
+
+                <!-- 임시 보호 -->
+                <div class="bg-white rounded-2xl p-8 border border-brand-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-brand-500 text-3xl mb-4">
+                            <i class="fa-solid fa-house-chimney-user"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900 mb-2">임시 보호 (Foster)</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                            새로운 입양처를 찾기 전까지 가정에서 안전하게 지낼 수 있도록 수호천사가 되어주세요. (기간: 1개월~)
+                        </p>
+                    </div>
+                    <button onclick="openFosterModal()" class="w-full bg-brand-900 hover:bg-brand-800 text-white font-medium py-3 rounded-xl transition-colors text-center">
+                        임시보호 신청
+                    </button>
+                </div>
+
+                <!-- 봉사 활동 -->
+                <div class="bg-white rounded-2xl p-8 border border-brand-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-brand-500 text-3xl mb-4">
+                            <i class="fa-solid fa-hands-holding-child"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900 mb-2">보호소 봉사활동</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                            견사 청소, 아이들 산책, 미용, 견생샷 촬영 등 주말 봉사 활동에 손길을 보태어 주세요.
+                        </p>
+                    </div>
+                    <a href="#contact" class="w-full bg-brand-900 hover:bg-brand-800 text-white font-medium py-3 rounded-xl transition-colors text-center block">
+                        봉사 일정 문의
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 문의 섹션 (폼) -->
+    <section id="contact" class="py-24 bg-brand-900 text-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-brand-300 font-bold text-sm uppercase tracking-wider">Contact Us</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold mt-2">궁금하신 점이 있으신가요?</p>
+                <p class="text-gray-300 mt-2 font-light">입양, 임시보호, 봉사활동 등 어떤 문의든 편하게 남겨주세요.</p>
+            </div>
+
+            <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4 bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="contact-name" class="block text-xs font-medium text-gray-300 mb-1">성함 *</label>
+                        <input type="text" id="contact-name" required class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-brand-500 transition-colors" placeholder="홍길동">
+                    </div>
+                    <div>
+                        <label for="contact-phone" class="block text-xs font-medium text-gray-300 mb-1">연락처 *</label>
+                        <input type="tel" id="contact-phone" required class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-brand-500 transition-colors" placeholder="010-0000-0000">
+                    </div>
+                </div>
+                <div>
+                    <label for="contact-type" class="block text-xs font-medium text-gray-300 mb-1">문의 유형</label>
+                    <select id="contact-type" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition-colors [&>option]:text-brand-900">
+                        <option value="adopt">입양 문의</option>
+                        <option value="foster">임시보호 문의</option>
+                        <option value="volunteer">봉사활동 문의</option>
+                        <option value="donate">후원 문의</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="contact-message" class="block text-xs font-medium text-gray-300 mb-1">문의 내용 *</label>
+                    <textarea id="contact-message" required rows="4" class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-brand-500 transition-colors" placeholder="문의하실 내용을 입력해주세요."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-brand-500/30">
+                    메시지 보내기
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 7. 푸터 -->
+    <footer class="bg-gray-950 text-gray-400 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 text-white font-bold text-lg mb-4">
+                        <i class="fa-solid fa-paw text-brand-500"></i>
+                        <span>따스한 온기 캠페인</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        유기견들이 따뜻한 가정으로 돌아가는 날까지, 사단법인 따스한 온기가 함께합니다.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4 text-sm">연락처 및 위치</h4>
+                    <ul class="text-sm space-y-2 font-light">
+                        <li><i class="fa-solid fa-location-dot w-5 text-brand-500"></i> 서울특별시 마포구 월드컵로 123</li>
+                        <li><i class="fa-solid fa-phone w-5 text-brand-500"></i> 02-1234-5678</li>
+                        <li><i class="fa-solid fa-envelope w-5 text-brand-500"></i> contact@warmwarm.org</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4 text-sm">공식 SNS</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-500 hover:text-white flex items-center justify-center transition-colors" aria-label="인스타그램"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-500 hover:text-white flex items-center justify-center transition-colors" aria-label="유튜브"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-500 hover:text-white flex items-center justify-center transition-colors" aria-label="블로그"><i class="fa-solid fa-b"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
+                <p>&copy; 2026 따스한 온기 (Warm Shelter Campaign). All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 모달: 후원 안내 -->
+    <div id="donationModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl transform scale-95 transition-transform duration-300" id="donationModalContent">
+            <button onclick="closeModal('donationModal')" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1" aria-label="모달 닫기">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-brand-100 text-brand-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-heart text-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-brand-900">후원 계좌 안내</h3>
+                <p class="text-xs text-gray-500 mt-1">소중한 후원금은 100% 아이들을 위해 사용됩니다.</p>
+            </div>
+            <div class="space-y-3 bg-brand-50 p-4 rounded-2xl mb-6">
+                <div>
+                    <span class="text-xs text-gray-500">예금주</span>
+                    <p class="font-bold text-brand-900">사단법인 따스한온기</p>
+                </div>
+                <div class="border-t border-brand-200/60 pt-2">
+                    <span class="text-xs text-gray-500">계좌번호 (행복은행)</span>
+                    <div class="flex justify-between items-center mt-1">
+                        <p class="font-mono font-bold text-brand-600 text-lg" id="bank-account">123-4567-8901-02</p>
+                        <button onclick="copyAccount()" class="text-xs bg-white text-brand-600 font-semibold px-2.5 py-1 rounded border border-brand-200 hover:bg-brand-100">복사</button>
+                    </div>
+                </div>
+            </div>
+            <button onclick="closeModal('donationModal')" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors">
+                확인
+            </button>
+        </div>
+    </div>
+
+    <!-- 모달: 입양 상담 신청 -->
+    <div id="adoptModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl transform scale-95 transition-transform duration-300" id="adoptModalContent">
+            <button onclick="closeModal('adoptModal')" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1" aria-label="모달 닫기">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-brand-900"><span id="adoptTargetName" class="text-brand-500"></span> 입양 상담</h3>
+                <p class="text-xs text-gray-500 mt-1">간단한 정보를 남겨주시면 담당자가 연락드립니다.</p>
+            </div>
+            <form onsubmit="handleAdoptSubmit(event)" class="space-y-4">
+                <div>
+                    <label for="adopt-name" class="block text-xs font-semibold text-gray-700 mb-1">성함</label>
+                    <input type="text" id="adopt-name" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label for="adopt-phone" class="block text-xs font-semibold text-gray-700 mb-1">연락처</label>
+                    <input type="tel" id="adopt-phone" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500" placeholder="010-0000-0000">
+                </div>
+                <div>
+                    <label for="adopt-location" class="block text-xs font-semibold text-gray-700 mb-1">거주 지역</label>
+                    <input type="text" id="adopt-location" placeholder="예: 서울시 마포구" required class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors mt-2">
+                    상담 신청하기
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 알림 메시지 토스트 -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-brand-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-brand-500 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">메시지가 전송되었습니다.</span>
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // 1. 모바일 메뉴 토글
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 모바일 메뉴 링크 클릭 시 메뉴 닫기
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 2. 강아지 목록 필터링 기능
+        function filterDogs(category) {
+            const cards = document.querySelectorAll('.dog-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // 버튼 스타일 업데이트
+            buttons.forEach(btn => {
+                if(btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('bg-brand-500', 'text-white', 'shadow-sm');
+                    btn.classList.remove('text-gray-600');
+                } else {
+                    btn.classList.remove('bg-brand-500', 'text-white', 'shadow-sm');
+                    btn.classList.add('text-gray-600');
+                }
+            });
+
+            // 카드 노출 여부 조절
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 3. 모달 제어 함수
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('div[id$="Content"]');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                if(content) {
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('div[id$="Content"]');
+            
+            if(content) {
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+            }
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 입양 모달 전용 열기
+        function openAdoptModal(dogName) {
+            document.getElementById('adoptTargetName').innerText = dogName;
+            openModal('adoptModal');
+        }
+
+        function openFosterModal() {
+            document.getElementById('adoptTargetName').innerText = '임시보호';
+            openModal('adoptModal');
+        }
+
+        // 계좌번호 복사 기능
+        function copyAccount() {
+            const accountNo = document.getElementById('bank-account').innerText;
+            
+            // 임시 textarea 생성 후 복사 (execCommand 활용)
+            const tempElem = document.createElement('textarea');
+            tempElem.value = accountNo;
+            document.body.appendChild(tempElem);
+            tempElem.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempElem);
+
+            showToast('계좌번호가 복사되었습니다!');
+        }
+
+        // 폼 제출 이벤트 핸들러
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            showToast('문의가 성공적으로 접수되었습니다. 곧 연락드리겠습니다!');
+            e.target.reset();
+        }
+
+        function handleAdoptSubmit(e) {
+            e.preventDefault();
+            closeModal('adoptModal');
+            showToast('입양/임보 상담 신청이 완결되었습니다.');
+            e.target.reset();
+        }
+
+        // 토스트 알림 메시지 노출 함수
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 네비게이션 스크롤 효과
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
